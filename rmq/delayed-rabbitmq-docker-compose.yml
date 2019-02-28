@@ -1,0 +1,28 @@
+# https://github.com/pardahlman/docker-rabbitmq-cluster/blob/master/docker-compose.yml
+# docker-compose -f delayed-rabbitmq-docker-compose.yml up --force-recreate --build -d
+# docker-compose -f delayed-rabbitmq-docker-compose.yml down
+# docker run -d --hostname my-rabbit-delayed --restart unless-stopped --name dev-rabbit -p 15672:15672 -p 5672:5672 richbrains/rabbitmq-delayed-management
+# docker run -p 9200:9200 -p 9300:9300 --restart unless-stopped -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.3.2
+# rabbitmq-plugins enable rabbitmq_management
+# tags used: richbrains/rabbitmq-delayed-management:latest
+# add the rabbitmq.config file on to the docker volume and restart the container
+version: "3"
+
+services:
+  rabbitmq2:
+    image: richbrains/rabbitmq-delayed-management:latest
+    container_name: dev-rabbit
+    hostname: my-rabbit-delayed
+    restart: unless-stopped
+    command: sh -c "rabbitmq-plugins enable rabbitmq_management; rabbitmq-server"
+    environment:
+      RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST}
+    ports:
+      - 15672:15672 #http
+      - 5672:5672 #amqp
+      # - 25672:25672   #clustering
+    volumes:
+      - e:\dkr\rmq\:/etc/rabbitmq/

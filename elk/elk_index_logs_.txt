@@ -1,0 +1,31 @@
+PUT sma_logs/_mapping/_doc 
+{
+  "properties": {
+    "date":{
+      "type": "date"
+    },
+    "level": {
+      "type": "keyword"
+    },
+    "userId":{
+      "type": "integer"
+    },
+    "requestId":{
+      "type":"text"
+    },
+    "requestMethod":{
+      "type":"text"
+    },
+    "requestUrl":{
+      "type":"text"
+    },
+    "logger":{
+      "type":"text"
+    },
+    "message":{
+      "type":"text"
+    }
+  }
+}
+
+%date %-5level %property{UserId} %property{RequestId} %property{RequestMethod} %property{RequestUrl} %logger - %message%newline

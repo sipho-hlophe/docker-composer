@@ -1,0 +1,19 @@
+# http://nginx.org/en/docs/beginners_guide.html#conf_structure
+# docker-compose -f nginx-docker-compose.yml up --force-recreate --build -d
+# docker-compose -f nginx-docker-compose.yml down
+# used tags: 1.13.9-alpine
+version: '3'
+
+services:
+  nginx-server:
+    container_name: nginx-1139_a
+    image: nginx:1.13.9-alpine
+    volumes:
+      - e:\dkr\nginx\html:/usr/share/nginx/html:ro
+      # - e:\dkr\nginx\conf\nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8090:80
+    environment:
+      # - NGINX_HOST=cardinal.jhb
+      - NGINX_PORT=80
+    restart: unless-stopped

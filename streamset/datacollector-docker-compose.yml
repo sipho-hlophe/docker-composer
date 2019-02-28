@@ -1,0 +1,20 @@
+# docker pull streamsets/datacollector
+# docker run --restart on-failure -p 18630:18630 -d --name streamsets-dc streamsets/datacollector dc
+# https://hub.docker.com/r/streamsets/datacollector/
+# docker-compose -f ../elk/elk-stack-docker-compose.yml up
+# docker-compose -f datacollector-docker-compose.yml up --force-recreate --build -d
+# docker-compose -f datacollector-docker-compose.yml down
+# used tags: 3.8.0
+version: '3'
+
+services:
+  datacollector-server:
+    container_name: dc380
+    image: streamsets/datacollector
+    ports:
+      - ${PORT}:18630
+    volumes:
+      - e:\dkr\sdc\tmp:/tmp
+      - e:\dkr\sdc\data:/data
+      - e:\dkr\sdc\logs:/logs
+    restart: unless-stopped

@@ -1,0 +1,19 @@
+# https://store.docker.com/images/jenkins
+# docker-compose -f jenkins-docker-compose.yml up --force-recreate --build -d
+# docker-compose -f jenkins-docker-compose.yml down
+# used tags: 2.60.3
+
+version: '3'
+
+services:
+  jenkins-ci:
+    container_name: jenkins-ci-2603
+    image: jenkins:2.60.3
+    volumes:
+      - e:\dkr\jenkins\:/var/jenkins_home
+    ports:
+      - ${UI_PORT}:8080
+      - ${API_PORT}:50000
+    environment:
+      JENKINS_SLAVE_AGENT_PORT : ${JENKINS_SLAVE_AGENT_PORT}
+    restart: unless-stopped

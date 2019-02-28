@@ -1,0 +1,22 @@
+# https://store.docker.com/community/images/ravendb/ravendb
+# docker-compose -f ravendb-docker-compose.yml up --force-recreate --build -d
+# docker-compose -f ravendb-docker-compose.yml down
+# used tags: ubuntu-latest
+# documentation: https://ravendb.net/docs/article-page/3.0/csharp/start/getting-started
+
+version: "3"
+
+services:
+  raven-server:
+    container_name: ravendb_latest
+    image: ravendb/ravendb:latest
+    volumes:
+      - e:\dkr\ravendb\config:/opt/RavenDB/config
+      - e:\dkr\ravendb\data:/opt/RavenDB/Server/RavenData
+    ports:
+      - ${BIND_TCP_PORT}:38888
+      - ${BIND_PORT}:8080
+    environment:
+      RAVEN_ARGS: "--Setup.Mode=None"
+      RAVEN_Security_UnsecuredAccessAllowed: "PrivateNetwork"
+    restart: unless-stopped

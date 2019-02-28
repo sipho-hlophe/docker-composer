@@ -1,0 +1,25 @@
+# https://appbaseio-confidential.github.io/streams/
+# elasticsearch must be running before running streams
+# docker-compose -f ../elk/elk-stack-docker-compose.yml up
+# docker-compose -f streams-docker-compose.yml up --force-recreate --build -d
+# docker-compose -f streams-docker-compose.yml down
+# used tags: 2.1.2
+version: '3'
+
+services:
+  streams-server:
+    container_name: streams_212
+    image: store/appbaseio/streams:2.1.2
+    # volumes:
+    #   - e:\dkr\strmz\ssl:/ssl
+    ports:
+      - 80:80
+    environment:
+      UPSTREAM_ADDRS: ${ES_NODES}
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      AUTH_USER: ${AUTH_USER}
+      AUTH_PASS: ${AUTH_PASS}
+      SSL_OFF: ${SSL_OFF}
+      AUTH_OFF: ${AUTH_OFF}
+      DNS_SERVER: ${DNS_SERVER}
+    restart: unless-stopped

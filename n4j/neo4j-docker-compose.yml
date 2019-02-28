@@ -1,0 +1,31 @@
+# https://neo4j.com/docs/operations-manual/current/installation/docker/
+# docker-compose -f neo4j-docker-compose.yml up --force-recreate --build -d
+# docker-compose -f neo4j-docker-compose.yml down
+# used tags: 3.3.3, 3.3.5, 3.4.5-enterprise, 3.4.8-enterprise, neo4j:3.5.1-enterprise*, neo4j:3.5.2-enterprise
+# GraphiQL plugin - https://github.com/neo4j-graphql/neo4j-graphql
+
+version: "3"
+
+services:
+  n4j-server:
+    container_name: n4j-351-e
+    image: neo4j:3.5.1-enterprise
+    volumes:
+      - e:\dkr\neo4j\data:/var/lib/neo4j/data
+      - e:\dkr\neo4j\logs:/logs
+      - e:\dkr\neo4j\conf:/var/lib/neo4j/conf
+      - e:\dkr\neo4j\plugins:/plugins
+      - e:\dkr\neo4j\import:/var/lib/neo4j/import
+      - e:\dkr\neo4j\certificates:/var/lib/neo4j/certificates
+      - e:\dkr\neo4j\run:/var/lib/neo4j/run
+    ports:
+      - ${NEO4J_HTTP}:7474 # 7474:7474   # Http protocol - Used by the Neo4j Browser. Also used by REST API. (Development)
+      - ${NEO4J_BOLT}:7687 # 7687:7687   # Bolt protocol - Used by Cypher Shell and by the Neo4j Browser.
+      # - ${NEO4J_HTTPS}:7473   # Https protocol - Used by the Neo4j Browser. Also used by REST API. (Production)
+    environment:
+      NEO4J_AUTH: ${NEO4J_AUTH}
+      NEO4J_ACCEPT_LICENSE_AGREEMENT: ${NEO4J_ACCEPT_LICENSE_AGREEMENT}
+      NEO4J_apoc_export_file_enabled: ${NEO4J_apoc_export_file_enabled}
+      NEO4J_apoc_import_file_enabled: ${NEO4J_apoc_import_file_enabled}
+      NEO4J_apoc_import_file_use__neo4j__config: ${NEO4J_apoc_import_file_use__neo4j__config}
+    restart: unless-stopped

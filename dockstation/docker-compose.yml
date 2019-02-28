@@ -1,0 +1,28 @@
+version: '2'
+services:
+  rabbitmq:
+    image: 'rabbitmq:3.7.3-alpine'
+    volumes:
+      - '.\rmq:/var/lib/rabbitmq'
+  mssql:
+    image: 'microsoft/mssql-server-linux:2017-CU4'
+    volumes:
+      - '.\mssql:/var/opt/mssql/'
+    ports:
+      - '1433:1433'
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password@@1234
+      - MSSQL_PID=Developer
+  nginx:
+    image: 'nginx:1.13.9-alpine'
+    ports:
+      - '8090:80'
+    volumes:
+      - '.\nginx:/etc/nginx/'
+  postgres:
+    image: postgres
+    environment: []
+    ports: []
+  elasticsearch:
+    image: elasticsearch

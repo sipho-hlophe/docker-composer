@@ -1,0 +1,26 @@
+# https://elk-docker.readthedocs.io
+# https://hub.docker.com/r/sebp/elkx
+# https://github.com/spujadas/elkx-docker
+# docker-compose -f elk-stack-x-docker-compose.yml up --force-recreate --build -d
+# docker-compose -f elk-stack-x-docker-compose.yml down
+version: '2.2'
+
+services:
+  elkx:
+    image: sebp/elkx:624
+    container_name: elkx_stack_624
+    restart: unless-stopped
+    ports:
+      - ${KIBANA}:5601 # Kibana web interface
+      - ${ELASTIC_JSON}:9200 # Elasticsearch JSON interface
+      - ${ELASTIC_TRANS}:9300 # Elasticsearch transport interface
+      - ${BEATS}:5044 # Logstash Beats interfaces, receives logs from Beats such as Filebeat
+    volumes:
+      - e:\dkr\elk\x:/var/lib/elasticsearch
+    environment:
+      - ELASTICSEARCH_USER=${ELASTIC_USER}
+      - ELASTICSEARCH_PASSWORD={ELASTIC_PASS}
+      - LOGSTASH_USER=${LOGSTASH_USER}
+      - LOGSTASH_PASSWORD=${LOGSTASH_PASS}
+      - KIBANA_USER=${KIBANA_USER}
+      - KIBANA_PASSWORD=${KIBANA_PASS}

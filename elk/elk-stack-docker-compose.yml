@@ -1,0 +1,19 @@
+# https://elk-docker.readthedocs.io
+# https://hub.docker.com/r/sebp/elk
+# https://github.com/spujadas/elk-docker
+# docker-compose -f elk-stack-docker-compose.yml up --force-recreate --build -d
+# docker-compose -f elk-stack-docker-compose.yml down
+version: '2.2'
+
+services:
+  elk:
+    image: sebp/elk:651
+    container_name: elk_stack_651
+    restart: unless-stopped
+    volumes:
+      - e:\dkr\elk:/var/lib/elasticsearch
+    ports:
+      - ${KIBANA}:5601 # Kibana web interface
+      - ${ELASTIC_JSON}:9200 # Elasticsearch JSON interface
+      - ${ELASTIC_TRANS}:9300 # Elasticsearch transport interface
+      - ${BEATS}:5044 # Logstash Beats interfaces, receives logs from Beats such as Filebeat

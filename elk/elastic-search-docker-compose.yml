@@ -1,0 +1,18 @@
+# docker run -p 9200:9200 -p 9300:9300 --restart unless-stopped -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:6.5.4
+# docker-compose -f elastic-search-docker-compose.yml up --force-recreate --build -d
+# docker-compose -f elastic-search-docker-compose.yml down
+
+version: '3'
+
+services:
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
+    container_name: elastic_search
+    restart: unless-stopped
+    environment:
+      - "discovery.type=single-node"
+    ports:
+      - ${ELASTIC_JSON}:9200   
+      - ${ELASTIC_TRANS}:9300     
+    
