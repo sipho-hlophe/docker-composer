@@ -3,19 +3,21 @@
 # docker-compose -f sql-docker-compose.yml up --force-recreate --build -d
 # docker-compose -f sql-docker-compose.yml down
 # used tags: 2017-CU9 (docker pull store/microsoft/mssql-server-linux:2017-latest)
-version: '3'
+#          : docker pull mcr.microsoft.com/mssql/server
+#          : docker pull mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+version: "3"
 
 services:
   mssql-server:
     container_name: mssql-server-1
-    image: store/microsoft/mssql-server-linux:2017-latest
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
     ports:
-      - 1434:1433
+      - ${PORT}:1433
     environment:
       SA_PASSWORD: ${SA_PASSWORD}
       ACCEPT_EULA: ${ACCEPT_EULA}
       MSSQL_PID: ${MSSQL_PID}
     restart: unless-stopped
     volumes:
-    - e:\dkr\mssql\data:/var/opt/mssql/data
-    - e:\dkr\mssql\backup:/var/opt/mssql/backup
+      - ${DIR_DATA}:/var/opt/mssql/data
+      - ${DIR_BAK}:/var/opt/mssql/backup
