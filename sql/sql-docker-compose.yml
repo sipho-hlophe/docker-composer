@@ -2,9 +2,10 @@
 # this depends on what version of docker is running
 # docker-compose -f sql-docker-compose.yml up --force-recreate --build -d
 # docker-compose -f sql-docker-compose.yml down
+# to connect to instance: 127.0.0.1,${PORT}; userId=sa; password=${SA_PASSWORD}
 # used tags: 2017-CU9 (docker pull store/microsoft/mssql-server-linux:2017-latest)
-#          : docker pull mcr.microsoft.com/mssql/server
 #          : docker pull mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+
 version: "3"
 
 services:
@@ -19,5 +20,7 @@ services:
       MSSQL_PID: ${MSSQL_PID}
     restart: unless-stopped
     volumes:
-      - ${DIR_DATA}:/var/opt/mssql/data
-      - ${DIR_BAK}:/var/opt/mssql/backup
+      # - ${DIR_DATA}:/var/opt/mssql/data
+      # - ${DIR_BAK}:/var/opt/mssql/backup
+      - ${DIR_DATA}:/var/opt/mssql/extra/data
+      - ${DIR_BAK}:/var/opt/mssql/extra/backup
