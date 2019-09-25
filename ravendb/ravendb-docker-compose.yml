@@ -3,13 +3,16 @@
 # docker-compose -f ravendb-docker-compose.yml down
 # used tags: ubuntu-latest
 # documentation: https://ravendb.net/docs/article-page/3.0/csharp/start/getting-started
+# docker pull ravendb/ravendb will break iGuide
+# docker pull pizycki/ravendb4
+# docker pull kymeric/ravendb
 
 version: "3"
 
 services:
   raven-server:
     container_name: ravendb_latest
-    image: ravendb/ravendb:latest
+    image: kymeric/ravendb:latest
     volumes:
       - e:\dkr\ravendb\config:/opt/RavenDB/config
       - e:\dkr\ravendb\data:/opt/RavenDB/Server/RavenData
