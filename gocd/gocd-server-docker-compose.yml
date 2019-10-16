@@ -1,0 +1,26 @@
+# https://hub.docker.com/r/gocd/gocd-server
+# docker-compose -f gocd-server-docker-compose.yml up --force-recreate --build -d
+# docker-compose -f gocd-server-docker-compose.yml down
+# used tags: v19.9.0
+
+version: "3"
+
+services:
+  gocd-server:
+    container_name: gocd_server_1990
+    image: gocd/gocd-server:v19.9.0
+    volumes:
+      - e:\dkr\gocd\svr\godata\:/godata
+      - e:\dkr\gocd\svr\go\:/home/go
+    ports:
+      - ${GOCD_SERVER_OPEN_PORT}:8153
+      - ${GOCD_SERVER_SECURE_PORT}:8154
+    restart: unless-stopped
+  gocd-agent:
+    container_name: gocd_agent_alpine_39_1990
+    image: gocd/gocd-agent-alpine-3.9:v19.9.0
+    volumes:
+      - e:\dkr\gocd\agent\:/var/gocd_home
+    environment:
+      GO_SERVER_URL: ${GO_SERVER_URL}
+    restart: unless-stopped

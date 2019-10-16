@@ -1,0 +1,17 @@
+# https://hub.docker.com/r/gocd/gocd-agent-alpine-3.9
+# docker-compose -f gocd-agent-docker-compose.yml up --force-recreate --build -d
+# docker-compose -f gocd-agent-docker-compose.yml down
+# used tags: v19.9.0
+# docker run -d -e GO_SERVER_URL=https://$(docker inspect --format='{{(index (index .NetworkSettings.IPAddress))}}' gocd_server_1990):8154/go gocd/gocd-agent-alpine-3.9:v19.9.0
+
+version: "3"
+
+services:
+  gocd-agent:
+    container_name: gocd_agent_alpine_39_1990
+    image: gocd/gocd-agent-alpine-3.9:v19.9.0
+    volumes:
+      - e:\dkr\gocd\agent\:/var/gocd_home
+    environment:
+      GO_SERVER_URL: ${GO_SERVER_URL}
+    restart: unless-stopped
