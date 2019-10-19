@@ -1,16 +1,19 @@
-# specify the compose file format
-# this depends on what version of docker is running
 # docker-compose -f sql-docker-compose.yml up --force-recreate --build -d
 # docker-compose -f sql-docker-compose.yml down
+# used tags: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+
 # to connect to instance: 127.0.0.1,${PORT}; userId=sa; password=${SA_PASSWORD}
-# used tags: 2017-CU9 (docker pull store/microsoft/mssql-server-linux:2017-latest)
-#          : docker pull mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+
+# copy files into container:
+# $> docker cp e:\dkr\mssql\backup\backupfile.bak mssql-server-17:/var/opt/mssql/data/backupfile.bak
+# copy files out of container:
+# $> docker cp mssql-server-17:/var/opt/mssql/data/backupfile.bak e:\dkr\mssql\backup\backupfile.bak
 
 version: "3"
 
 services:
   mssql-server:
-    container_name: mssql-server-1
+    container_name: mssql-server-17
     image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
     ports:
       - ${PORT}:1433
@@ -20,7 +23,5 @@ services:
       MSSQL_PID: ${MSSQL_PID}
     restart: unless-stopped
     volumes:
-      # - ${DIR_DATA}:/var/opt/mssql/data
-      # - ${DIR_BAK}:/var/opt/mssql/backup
-      - ${DIR_DATA}:/var/opt/mssql/extra/data
-      - ${DIR_BAK}:/var/opt/mssql/extra/backup
+      - ${DIR_DATA}:/var/opt/mssql/data
+      - ${DIR_BAK}:/var/opt/mssql/backup

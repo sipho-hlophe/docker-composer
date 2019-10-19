@@ -1,20 +1,19 @@
-# specify the compose file format
-# this depends on what version of docker is running
 # docker-compose -f postgresql-docker-compose.yml up --force-recreate --build -d
 # docker-compose -f postgresql-docker-compose.yml down
 # docker pull dpage/pgadmin4 && docker run -p 85:80 -e "PGADMIN_DEFAULT_EMAIL=postgres" -e "PGADMIN_DEFAULT_PASSWORD=password1" -d dpage/pgadmin4
 # docker pull postgres:11.1-alpine && docker run -p 5432:5432 -e POSTGRES_PASSWORD=password1 --restart unless-stopped --name postgressql_11_1_a -d
+# Container Mappings: <host:container>
 
-version: '3.1'
+version: "3"
 
 services:
   postgres:
     container_name: postgresql_11_1_a
     image: postgres:11.1-alpine
     volumes:
-      - e:\dkr\pg\:/var/lib/postgresql/
+      - ${HOME_VOL}:/var/lib/postgresql/
     ports:
-      - 5432:5432 #(host:container)
+      - ${PORT}:5432
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     restart: unless-stopped
