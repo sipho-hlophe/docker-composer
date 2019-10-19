@@ -4,6 +4,11 @@ I'm too lazy to install most of these tools onto my environment, so I cheat by u
 
 the benefit is you can tear down and rebuild the container that is misbehaving.
 
+## Resources
+
+1. [Dockstation is my go to tool to manage my containers visually](https://dockstation.io/)
+1. [Visual Studio Code with Docker extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker)
+
 ## Example Environment Variables
 
 1. SQL Server
