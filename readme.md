@@ -39,6 +39,8 @@ CLUSTERING=25672
 ```conf
 BIND_PORT=8080
 BIND_TCP_PORT=38888
+SECURITY_UNSECURED_ACCESS_ALLOW="PublicNetwork"
+ARGS="--Setup.Mode=Unsecured"
 ```
 
 1. Neo4J
@@ -67,7 +69,6 @@ LOGSTASH_USER=logstash
 LOGSTASH_PASS=logstash
 KIBANA_USER=kibana
 KIBANA_PASS=kibana
-
 ```
 
 1. goCD
