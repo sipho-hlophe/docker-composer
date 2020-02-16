@@ -1,15 +1,16 @@
 # https://github.com/pardahlman/docker-rabbitmq-cluster/blob/master/docker-compose.yml
 # docker-compose -f rabbitmq-docker-compose.yml up --force-recreate --build -d
 # docker-compose -f rabbitmq-docker-compose.yml down
-# tags used: rabbitmq:3.7.3-management-alpine, rabbitmq:3.7.3-management, rabbitmq:3.7.5-management-alpine, latest
+# tags used: rabbitmq:3.7-management-alpine, rabbitmq:3.7-management
 version: "3"
 
 services:
   rabbitmq1:
-    image: rabbitmq:latest
-    container_name: rabbitmq_l
+    image: rabbitmq:3.7-management-alpine
+    container_name: rabbitmq_37_m_a
     hostname: rabbitmq1
     restart: unless-stopped
+    # command: sh -c "rabbitmq-plugins enable rabbitmq_management"
     environment:
       RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
@@ -22,5 +23,5 @@ services:
       - ${HTTP}:15672 #http
       - ${AMQP}:5672 #amqp
       # - ${CLUSTERING}:25672   #clustering
-    volumes:
-      - e:\dkr\rmq\:/etc/rabbitmq/
+    # volumes:
+      # - c:\dkr\rmq\:/etc/rabbitmq/

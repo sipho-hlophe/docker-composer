@@ -1,23 +1,23 @@
 # https://neo4j.com/docs/operations-manual/current/installation/docker/
 # docker-compose -f neo4j-docker-compose.yml up --force-recreate --build -d
 # docker-compose -f neo4j-docker-compose.yml down
-# used tags: 3.3.3, 3.3.5, 3.4.5-enterprise, 3.4.8-enterprise, neo4j:3.5.1-enterprise*, neo4j:3.5.2-enterprise, neo4j:3.5.3-enterprise
+# used tags: 4.0-enterprise
 # GraphiQL plugin - https://github.com/neo4j-graphql/neo4j-graphql
 
 version: "3"
 
 services:
   n4j-server:
-    container_name: n4j-353-e
-    image: neo4j:3.5.3-enterprise
+    container_name: n4j-4-e
+    image: neo4j:enterprise
     volumes:
-      - e:\dkr\neo4j\data:/var/lib/neo4j/data
-      - e:\dkr\neo4j\logs:/logs
-      - e:\dkr\neo4j\conf:/var/lib/neo4j/conf
-      - e:\dkr\neo4j\plugins:/plugins
-      - e:\dkr\neo4j\import:/var/lib/neo4j/import
-      - e:\dkr\neo4j\certificates:/var/lib/neo4j/certificates
-      - e:\dkr\neo4j\run:/var/lib/neo4j/run
+      - c:\dkr\neo4j\data:/var/lib/neo4j/data
+      - c:\dkr\neo4j\logs:/logs
+      - c:\dkr\neo4j\conf:/var/lib/neo4j/conf
+      - c:\dkr\neo4j\plugins:/plugins
+      - c:\dkr\neo4j\import:/var/lib/neo4j/import
+      - c:\dkr\neo4j\certificates:/var/lib/neo4j/certificates
+      - c:\dkr\neo4j\run:/var/lib/neo4j/run
     ports:
       - ${NEO4J_HTTP}:7474 # 7474:7474   # Http protocol - Used by the Neo4j Browser. Also used by REST API. (Development)
       - ${NEO4J_BOLT}:7687 # 7687:7687   # Bolt protocol - Used by Cypher Shell and by the Neo4j Browser.
