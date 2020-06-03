@@ -1,7 +1,7 @@
 # https://neo4j.com/docs/operations-manual/current/installation/docker/
 # docker-compose -f neo4j-docker-compose.yml up --force-recreate --build -d
 # docker-compose -f neo4j-docker-compose.yml down
-# used tags: 4.0-enterprise
+# used tags: 4.0-enterprise, 4.0.4-enterprise
 # GraphiQL plugin - https://github.com/neo4j-graphql/neo4j-graphql
 
 version: "3"
@@ -9,7 +9,7 @@ version: "3"
 services:
   n4j-server:
     container_name: n4j-4-e
-    image: neo4j:enterprise
+    image: neo4j:4.0.4-enterprise
     volumes:
       - c:\dkr\neo4j\data:/var/lib/neo4j/data
       - c:\dkr\neo4j\logs:/logs
@@ -28,4 +28,11 @@ services:
       NEO4J_apoc_export_file_enabled: ${NEO4J_apoc_export_file_enabled}
       NEO4J_apoc_import_file_enabled: ${NEO4J_apoc_import_file_enabled}
       NEO4J_apoc_import_file_use__neo4j__config: ${NEO4J_apoc_import_file_use__neo4j__config}
+      NEO4J_fabric_database_name: ${NEO4J_fabric_database_name}
+      NEO4J_fabric_graph_0_database: ${NEO4J_fabric_graph_0_database}
+      NEO4J_fabric_graph_0_name: ${NEO4J_fabric_graph_0_name}
+      NEO4J_fabric_graph_0_uri: ${NEO4J_fabric_graph_0_uri}
+      NEO4J_fabric_graph_1_database: ${NEO4J_fabric_graph_1_database}
+      NEO4J_fabric_graph_1_name: ${NEO4J_fabric_graph_1_name}
+      NEO4J_fabric_graph_1_uri: ${NEO4J_fabric_graph_1_uri}
     restart: unless-stopped

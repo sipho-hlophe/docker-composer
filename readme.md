@@ -52,8 +52,18 @@ NEO4J_apoc_export_file_enabled=true
 NEO4J_apoc_import_file_enabled=true
 NEO4J_apoc_import_file_use__neo4j__config=true
 NEO4J_HTTP=7475
-NEO4J_BOLT=7688
+NEO4J_BOLT=7687
 NEO4J_HTTPS=7472
+
+NEO4J_fabric_database_name=fabric
+
+NEO4J_fabric_graph_0_database=mens
+NEO4J_fabric_graph_0_name=mens
+NEO4J_fabric_graph_0_uri=neo4j://localhost:7687
+
+NEO4J_fabric_graph_1_database=womens
+NEO4J_fabric_graph_1_name=womens
+NEO4J_fabric_graph_1_uri=neo4j://localhost:7687
 ```
 
 1. ELK
