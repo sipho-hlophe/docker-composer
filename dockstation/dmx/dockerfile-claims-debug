@@ -1,0 +1,19 @@
+# https://hub.docker.com/_/microsoft-dotnet-core
+# $>  docker build --quiet --network host --pull --compress -t bl-claims:debug -f debug-dockerfile .
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/core/runtime:3.1
+# variables
+ENV port=44333 \
+    executable=Claims.Snowman.IdentityServer.dll \
+    maintainer=sipho.hlophe@betterlifegroup.co.za \
+    domain="Better Life Group" \
+    bin=/build/bin/deployNetCore/Claims.Snowman.IdentityServer
+
+LABEL Maintainer=${domain} Author=${maintainer}
+
+WORKDIR /app
+COPY ${bin} .
+EXPOSE ${port}
+VOLUME ["/StaticData"] 
+ENTRYPOINT ["dotnet", "${executable}"]

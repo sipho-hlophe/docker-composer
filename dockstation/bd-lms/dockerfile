@@ -1,0 +1,41 @@
+# https://hub.docker.com/_/microsoft-dotnet-core
+# $> docker build --network host --pull --quiet -t bl-claims:trial .
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+# variables
+ENV s1=http://196.201.108.208/nuget/BetterLife s2=https://api.nuget.org/v3/index.json
+ENV csproj=./Claims.Snowman.IdentityServer/Claims.Snowman.IdentityServer.csproj conf=Release
+
+WORKDIR /source
+
+# copy csproj and restore as distinct layers
+COPY Claims.Snowman.IdentityServer/*.csproj Claims.Snowman.IdentityServer/
+COPY Claims.ApiModels/*.csproj Claims.ApiModels/
+RUN dotnet restore ${csproj} -s ${s1} -s ${s2}
+
+# copy and build app and libraries
+COPY Claims.Snowman.IdentityServer/ Claims.Snowman.IdentityServer/
+COPY Claims.ApiModels/ Claims.ApiModels/
+WORKDIR /source/Claims.Snowman.IdentityServer
+RUN dotnet build -c release --no-restore
+
+# test stage -- exposes optional entrypoint
+# target entrypoint with: docker build --target test
+FROM build AS test
+WORKDIR /source/tests
+COPY tests/ .
+ENTRYPOINT ["dotnet", "test", "--logger:trx"]
+
+FROM build AS publish
+RUN dotnet publish -c release --no-build -o /app
+
+# final stage/image
+FROM mcr.microsoft.com/dotnet/core/runtime:3.1
+# variables
+ENV port=44333 executable=Claims.Snowman.IdentityServer.dll
+ENV maintainer=sipho.hlophe@betterlifegroup.co.za
+
+LABEL Maintainer=${maintainer} Author=${maintainer}
+WORKDIR /app
+COPY --from=publish /app .
+EXPOSE ${port}
+ENTRYPOINT ["dotnet", "Claims.Snowman.IdentityServer.dll"]

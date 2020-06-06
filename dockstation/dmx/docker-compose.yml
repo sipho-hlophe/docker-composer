@@ -50,4 +50,25 @@ services:
       RAVEN_Security_UnsecuredAccessAllowed: ${RAVENDB4_SECURITY_UNSECURED_ACCESS_ALLOW}
     volumes:
       - ${RAVENDB4_DIR_CONFIG}:/opt/RavenDB/config
-      - ${RAVENDB4_DIR_DATA}:/opt/RavenDB/Server/RavenData    
+      - ${RAVENDB4_DIR_DATA}:/opt/RavenDB/Server/RavenData   
+  claims:
+      container_name: bl-claims
+      image: bl-claims
+      restart: unless-stopped
+      depends_on: 
+        - rmq
+        - rvn4
+  notify:
+      container_name: bl-notify
+      image: bl-notify
+      restart: unless-stopped
+      depends_on: 
+        - rmq
+        - rvn4
+  orig-core:
+      container_name: orig-core
+      image: orig-core
+      restart: unless-stopped
+      depends_on: 
+        - claims
+        - notify

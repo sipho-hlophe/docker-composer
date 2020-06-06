@@ -1,0 +1,33 @@
+# https://hub.docker.com/_/microsoft-dotnet-core
+# $>  docker build --quiet --network host --pull --compress -t orig-core:1.0.0 -f dockerfile .
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+WORKDIR /source
+
+# variables
+ENV s1=http://196.201.108.208/nuget/BetterLife \
+    s2=https://api.nuget.org/v3/index.json \
+    csproj=./Origination.Snowman.Core/Origination.Snowman.Core/Origination.Snowman.Core.csproj \
+    conf=Release
+
+# copy csproj and restore as distinct layers
+COPY . .
+RUN dotnet restore ${csproj} -s ${s1} -s ${s2} --ignore-failed-sources
+
+# publish app and libraries
+RUN dotnet publish ${csproj} -c ${conf} -o /app --no-restore
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/core/runtime:3.1
+# variables
+ENV port=11016 \
+    executable=Origination.Snowman.Core.dll \
+    maintainer=sipho.hlophe@betterlifegroup.co.za \
+    domain="Better Life Group"
+
+LABEL Maintainer=${domain} Author=${maintainer}
+WORKDIR /app
+COPY --from=build /app .
+EXPOSE ${port}
+VOLUME ["/app/StaticData"] 
+# ENTRYPOINT ["dotnet", "${executable}"]

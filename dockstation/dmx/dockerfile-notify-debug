@@ -1,0 +1,19 @@
+# https://hub.docker.com/_/microsoft-dotnet-core
+# $>  docker build --quiet --network host --pull --compress -t bl-notify:debug -f dockerfile-notify-debug .
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/core/runtime:3.1
+# variables
+ENV port=8446 \
+    executable=BetterLife.Snowman.Notifier.dll \
+    maintainer=sipho.hlophe@betterlifegroup.co.za \
+    domain="Better Life Group" \
+    bin=./build/bin/deployNetCore/BetterLife.Snowman.Notifier
+
+LABEL Maintainer=${domain} Author=${maintainer}
+
+WORKDIR /app
+COPY ${bin} .
+EXPOSE ${port}
+VOLUME ["/app/StaticData"] 
+# ENTRYPOINT ["dotnet", "${executable}"]
