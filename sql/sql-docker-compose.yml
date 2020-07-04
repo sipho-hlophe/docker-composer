@@ -13,14 +13,16 @@ version: "3"
 
 services:
   mssql-server:
-    container_name: mssql-server-17
-    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    container_name: mssql-server-19
+    image: mcr.microsoft.com/mssql/server:2019-latest
     ports:
       - ${PORT}:1433
     environment:
       SA_PASSWORD: ${SA_PASSWORD}
       ACCEPT_EULA: ${ACCEPT_EULA}
       MSSQL_PID: ${MSSQL_PID}
+      MSSQL_MEMORY_LIMIT_MB: 2048
+      MSSQL_AGENT_ENABLED: true
     restart: unless-stopped
     volumes:
       - ${DIR_DATA}:/var/opt/mssql/data

@@ -20,6 +20,8 @@ MSSQL_PID=Developer
 DIR_DATA=e:\dkr\mssql\data
 DIR_BAK=e:\dkr\mssql\backup
 PORT=1434
+MSSQL_MEMORY_LIMIT=2048
+MSSQL_AGENT_ENABLED=true
 ```
 
 1. RabbitMQ
@@ -51,10 +53,15 @@ NEO4J_AUTH=<username/password>
 NEO4J_apoc_export_file_enabled=true
 NEO4J_apoc_import_file_enabled=true
 NEO4J_apoc_import_file_use__neo4j__config=true
+NEO4J_dbms_security_procedures_unrestricted=apoc.*
+NEO4J_dbms_security_procedures_whitelist=apoc.*
+NEO4J_dbms_shell_enabled=true
+NEO4JLABS_PLUGINS=["apoc"]
 NEO4J_HTTP=7475
 NEO4J_BOLT=7687
 NEO4J_HTTPS=7472
 
+NEO4J_database_name=qamanager
 NEO4J_fabric_database_name=fabric
 
 NEO4J_fabric_graph_0_database=mens
