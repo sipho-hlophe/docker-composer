@@ -48,18 +48,22 @@ ARGS="--Setup.Mode=Unsecured"
 1. Neo4J
 
 ```conf
+# https://github.com/neo4j/graph-data-science - gds, download and drop to plugins
 NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
 NEO4J_AUTH=<username/password>
 NEO4J_apoc_export_file_enabled=true
 NEO4J_apoc_import_file_enabled=true
 NEO4J_apoc_import_file_use__neo4j__config=true
-NEO4J_dbms_security_procedures_unrestricted=apoc.*
-NEO4J_dbms_security_procedures_whitelist=apoc.*
+NEO4J_dbms_security_procedures_unrestricted=apoc.*,gds.*
+NEO4J_dbms_security_procedures_whitelist=apoc.*,gds.*
 NEO4J_dbms_shell_enabled=true
 NEO4JLABS_PLUGINS=["apoc"]
 NEO4J_HTTP=7475
 NEO4J_BOLT=7687
 NEO4J_HTTPS=7472
+
+NEO4J_database_name=qamanager
+NEO4J_dbms_memory_pagecache_size=2GB
 
 NEO4J_database_name=qamanager
 NEO4J_fabric_database_name=fabric

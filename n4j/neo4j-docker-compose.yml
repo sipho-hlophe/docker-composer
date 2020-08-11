@@ -32,6 +32,7 @@ services:
       NEO4J_apoc_import_file_enabled: ${NEO4J_apoc_import_file_enabled}
       NEO4J_apoc_import_file_use__neo4j__config: ${NEO4J_apoc_import_file_use__neo4j__config}
       NEO4JLABS_PLUGINS: ${NEO4JLABS_PLUGINS}
+      NEO4J_dbms_memory_pagecache_size: ${NEO4J_dbms_memory_pagecache_size}
       # NEO4J_fabric_database_name: ${NEO4J_fabric_database_name}
       # NEO4J_fabric_graph_0_database: ${NEO4J_fabric_graph_0_database}
       # NEO4J_fabric_graph_0_name: ${NEO4J_fabric_graph_0_name}
