@@ -1,15 +1,15 @@
 # https://neo4j.com/docs/operations-manual/current/installation/docker/
 # docker-compose -f neo4j-docker-compose.yml up --force-recreate --build -d
 # docker-compose -f neo4j-docker-compose.yml down
-# used tags: 4.1-enterprise
+# used tags: 4.2-enterprise
 # GraphiQL plugin - https://github.com/neo4j-graphql/neo4j-graphql
 
 version: "3"
 
 services:
   n4j-server:
-    container_name: n4j-41-e
-    image: neo4j:4.1-enterprise
+    container_name: n4j-42-e
+    image: neo4j:4.2-enterprise
     volumes:
       - c:\dkr\neo4j\data:/var/lib/neo4j/data
       - c:\dkr\neo4j\logs:/logs
