@@ -1,0 +1,16 @@
+# https://hub.docker.com/_/registry
+# docker-compose -f registry-compose.yml up --force-recreate --build -d
+# docker-compose -f registry-compose.yml down
+# used tags: 2.7.1
+
+version: "3"
+
+services:
+  registry:
+    container_name: docker-registry
+    image: registry:latest
+    volumes:
+      - c:\dkr\registry:/var/lib/registry
+    ports:
+      - 5999:5000
+    restart: unless-stopped

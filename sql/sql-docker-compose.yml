@@ -22,7 +22,7 @@ services:
       ACCEPT_EULA: ${ACCEPT_EULA}
       MSSQL_PID: ${MSSQL_PID}
       MSSQL_MEMORY_LIMIT_MB: ${MSSQL_MEMORY_LIMIT_MB}
-      MSSQL_AGENT_ENABLED: ${MSSQL_AGENT_ENABLED}
+      # MSSQL_AGENT_ENABLED: ${MSSQL_AGENT_ENABLED}
     restart: unless-stopped
     volumes:
       - ${DIR_DATA}:/var/opt/mssql/data
