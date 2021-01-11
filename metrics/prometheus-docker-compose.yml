@@ -1,0 +1,15 @@
+# docker-compose -f prometheus-docker-compose.yml up --force-recreate --build -d
+# docker-compose -f prometheus-docker-compose.yml down
+
+version: "3"
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.20.1
+    container_name: prometheus_2201
+    hostname: prometheus1
+    restart: unless-stopped
+    ports:
+      - ${PROMETHEUS_PORT}:9090
+    volumes:
+      - ${PROMETHEUS_DATA_DIR}:/prometheus
