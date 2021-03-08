@@ -1,41 +1,37 @@
-# docker-compose up --force-recreate --build -d 
+# docker-compose up --force-recreate --build -d
+# docker-compose down
 
 version: "3"
 
 services:
-  sonarqube:
-    image: sonarqube:8-community
+  sq:
+    image: sonarqube:latest
     container_name: sonarqube
-    restart: always
-    command: 
-      - /bin/bash
-      - -c
-      - |
-        sysctl -w vm.max_map_count=262144
-        sysctl -w fs.file-max=65536
-        ulimit -n 65536
-        ulimit -u 4096
+    restart: unless-stopped
     environment:
       - SONARQUBE_JDBC_USERNAME=${PG_USER}
       - SONARQUBE_JDBC_PASSWORD=${PG_PASSWORD}
       - SONARQUBE_JDBC_URL=${SQ_DB_URL}
-      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=${Q_ES_BOOTSTRAP_CHECKS_DISABLE}
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=${SQ_ES_BOOTSTRAP_CHECKS_DISABLE}
     ports:
       - ${SQ_UI_PORT}:9000
     volumes:
-      - ${SQ_TEMP_PATH}:/opt/sonarqube/temp
+      # - ${SQ_TEMP_PATH}:/opt/sonarqube/temp
       - ${SQ_DATA_PATH}:/opt/sonarqube/data
-      - ${SQ_LOGS_PATH}:/opt/sonarqube/logs
+      # - ${SQ_LOGS_PATH}:/opt/sonarqube/logs
       - ${SQ_EXTS_PATH}:/opt/sonarqube/extensions
-    networks:
-      - sonarqube
+    # networks:
+    #   - sonarqube
+    links:
+      - db
+      - es01
     depends_on:
       - db
       - es01
   db:
     image: postgres:13-alpine
     container_name: db
-    restart: always
+    restart: unless-stopped
     environment:
       - POSTGRES_USER=${PG_USER}
       - POSTGRES_PASSWORD=${PG_PASSWORD}
@@ -43,70 +39,31 @@ services:
     volumes:
       - ${PG_PATH}:/var/lib/postgresql
       - ${PG_DATA}:/var/lib/postresql/data
-    networks:
-      - pg
+    # networks:
+    #   - pg
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.11.1
     container_name: ${ES1_NODE_NAME}
-    restart: always
-    environment:
-      - node.name=${ES1_NODE_NAME}
-      - cluster.name=${ES1_CLUS_NAME}
-      - discovery.seed_hosts=${ES1_DISCOVERY}
-      - cluster.initial_master_nodes=${ES1_CLUS_MAST}
-      - bootstrap.memory_lock=${ES1_BOOT_MEM}
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    restart: unless-stopped
     ulimits:
       memlock:
         soft: -1
         hard: -1
+    environment:
+      - node.name=es01
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
       - ${ES1_DATA_PATH}:/usr/share/elasticsearch/data
-    ports:
-      - ${ES1_PATH}:9200
-    networks:
-      - elastic
-  # es02:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
-  #   container_name: ${ES2_NODE_NAME}
-  #   environment:
-  #     - node.name=${ES2_NODE_NAME}
-  #     - cluster.name=${ES2_CLUS_NAME}
-  #     - discovery.seed_hosts=${ES2_DISCOVERY}
-  #     - cluster.initial_master_nodes=${ES2_CLUS_MAST}
-  #     - bootstrap.memory_lock=${ES2_BOOT_MEM}
-  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-  #   ulimits:
-  #     memlock:
-  #       soft: -1
-  #       hard: -1
-  #   volumes:
-  #     - ${ES2_DATA_PATH}:/usr/share/elasticsearch/data
-  #   networks:
-  #     - elastic
-  # es03:
-  #   image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
-  #   container_name: ${ES3_NODE_NAME}
-  #   environment:
-  #     - node.name=${ES3_NODE_NAME}
-  #     - cluster.name=${ES3_CLUS_NAME}
-  #     - discovery.seed_hosts=${ES3_DISCOVERY}
-  #     - cluster.initial_master_nodes=${ES3_CLUS_MAST}
-  #     - bootstrap.memory_lock=${ES3_BOOT_MEM}
-  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-  #   ulimits:
-  #     memlock:
-  #       soft: -1
-  #       hard: -1
-  #   volumes:
-  #     - ${ES3_DATA_PATH}:/usr/share/elasticsearch/data
+    # ports:
+      # - ${ES1_PATH}:9001
   #   networks:
   #     - elastic
 
-networks:
-  sonarqube:
-    driver: bridge
-  pg:
-    driver: bridge
-  elastic:
-    driver: bridge
+# networks:
+#   sonarqube:
+#     driver: bridge
+#   pg:
+#     driver: bridge
+#   elastic:
+#     driver: bridge
