@@ -4,7 +4,7 @@
 # used tags: 4.2-enterprise
 # GraphiQL plugin - https://github.com/neo4j-graphql/neo4j-graphql
 
-version: "3"
+version: "3.6"
 
 services:
   n4j-server:
@@ -19,9 +19,9 @@ services:
       - c:\dkr\neo4j\certificates:/var/lib/neo4j/certificates
       - c:\dkr\neo4j\run:/var/lib/neo4j/run
     ports:
-      - ${NEO4J_HTTP}:7474   # Http protocol - Used by the Neo4j Browser. Also used by REST API. (Development)
-      - ${NEO4J_BOLT}:7687   # Bolt protocol - Used by Cypher Shell and by the Neo4j Browser.
-      - ${NEO4J_HTTPS}:7473  # Https protocol - Used by the Neo4j Browser. Also used by REST API. (Production)
+      - ${NEO4J_HTTP}:7474 # Http protocol - Used by the Neo4j Browser. Also used by REST API. (Development)
+      - ${NEO4J_BOLT}:7687 # Bolt protocol - Used by Cypher Shell and by the Neo4j Browser.
+      - ${NEO4J_HTTPS}:7473 # Https protocol - Used by the Neo4j Browser. Also used by REST API. (Production)
     environment:
       NEO4J_AUTH: ${NEO4J_AUTH}
       NEO4J_ACCEPT_LICENSE_AGREEMENT: ${NEO4J_ACCEPT_LICENSE_AGREEMENT}
@@ -33,3 +33,69 @@ services:
       NEO4JLABS_PLUGINS: ${NEO4JLABS_PLUGINS}
       NEO4J_dbms_memory_pagecache_size: ${NEO4J_dbms_memory_pagecache_size}
     restart: unless-stopped
+
+  influxdb:
+    # https://hub.docker.com/_/influxdb
+    # https://github.com/influxdata/community-templates#templates
+    image: influxdb:alpine
+    container_name: influxDB_208_a
+    hostname: influxdb
+    restart: unless-stopped
+    ports:
+      - ${INFLUXDB_PORT}:8086
+    volumes:
+      - ${INFLUXDB_DATA_DIR}:/var/lib/influxdb2
+      - ${INFLUXDB_CONF_DIR}:/etc/influxdb2
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: ${INFLUXDB_INIT_MODE}
+      DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUXDB_INIT_USERNAME}
+      DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_INIT_PASSWORD}
+      DOCKER_INFLUXDB_INIT_ORG: ${INFLUXDB_INIT_ORG}
+      DOCKER_INFLUXDB_INIT_BUCKET: ${INFLUXDB_INIT_BUCKET}
+      DOCKER_INFLUXDB_INIT_RETENTION: ${INFLUXDB_INIT_RETENTION}
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_INIT_ADMIN_TOKEN}
+
+  strapi:
+    image: strapi/strapi:alpine
+    container_name: strapi_a
+    hostname: strapi
+    restart: unless-stopped
+    ports:
+      - ${STRAPI_PORT}:1337
+    volumes:
+      - ${STRAPI_DATA_DIR}:/svr/app
+    # environment:
+    #   DATABASE_CLIENT: ${STRAPI_DATABASE_CLIENT}
+    #   DATABASE_HOST: ${STRAPI_DATABASE_HOST}
+    #   DATABASE_PORT: ${STRAPI_DATABASE_PORT}
+    #   DATABASE_NAME: ${STRAPI_DATABASE_NAME}
+    #   DATABASE_USERNAME: ${STRAPI_DATABASE_USERNAME}
+    #   DATABASE_PASSWORD: ${STRAPI_DATABASE_PASSWORD}
+    # DATABASE_SSL: ${STRAPI_DATABASE_SSL}
+    # EXTRA_ARGS: ${STRAPI_EXTRA_ARGS}
+    # depends_on:
+    #   - mongo
+
+  # postgres:
+  #   image: postgres:alpine
+  #   container_name: postgres_a
+  #   hostname: postgres
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #   volumes:
+  #     - ${POSTGRES_DATA_DIR}:/var/lib/postgresql/data
+
+  # mongo:
+  #   image: mongo
+  #   container_name: mongo
+  #   hostname: mongo
+  #   restart: unless-stopped
+  #   environment:
+  #     POSTGRES_DB: ${MONGODB_DB}
+  #     POSTGRES_USER: ${MONGODB_USER}
+  #     POSTGRES_PASSWORD: ${MONGODB_PASSWORD}
+  #   volumes:
+  #     - ${MONGODB_DATA_DIR}:/data/db
