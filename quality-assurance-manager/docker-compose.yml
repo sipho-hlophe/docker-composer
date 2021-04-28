@@ -1,0 +1,48 @@
+# docker-compose -f docker-compose.yml up --force-recreate --build -d
+# docker-compose -f docker-compose.yml down
+
+version: "3.6"
+
+services:
+  strapi:
+    image: strapi/strapi
+    container_name: strapi
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    networks:
+      - strapi-app-network
+    volumes:
+      - .\app:/srv/app
+    ports:
+      - "1339:1337"
+    depends_on: 
+      - mongo
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    networks:
+      - strapi-app-network
+    volumes:
+      - strapidata:/data/db
+    ports:
+      - "27017:27017"
+
+networks:
+  strapi-app-network:
+    driver: bridge
+
+volumes:
+  strapidata:

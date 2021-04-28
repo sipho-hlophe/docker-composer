@@ -3,7 +3,7 @@
 # docker-compose -f registry-compose.yml down
 # used tags: 2.7.1
 
-version: "3"
+version: "3.6"
 
 services:
   registry:

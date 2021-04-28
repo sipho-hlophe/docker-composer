@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "People",
+  "info": {
+    "name": "Person"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "primary": {
+      "type": "json",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "unique": true,
+      "required": true
+    }
+  }
+}

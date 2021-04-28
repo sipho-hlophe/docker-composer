@@ -1,6 +1,6 @@
 # https://neo4j.com/docs/operations-manual/current/installation/docker/
-# docker-compose -f neo4j-docker-compose.yml up --force-recreate --build -d
-# docker-compose -f neo4j-docker-compose.yml down
+# docker-compose -f docker-compose.yml up --force-recreate --build -d
+# docker-compose -f docker-compose.yml down
 # used tags: 4.2-enterprise
 # GraphiQL plugin - https://github.com/neo4j-graphql/neo4j-graphql
 
@@ -54,48 +54,3 @@ services:
       DOCKER_INFLUXDB_INIT_BUCKET: ${INFLUXDB_INIT_BUCKET}
       DOCKER_INFLUXDB_INIT_RETENTION: ${INFLUXDB_INIT_RETENTION}
       DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_INIT_ADMIN_TOKEN}
-
-  strapi:
-    image: strapi/strapi:alpine
-    container_name: strapi_a
-    hostname: strapi
-    restart: unless-stopped
-    ports:
-      - ${STRAPI_PORT}:1337
-    volumes:
-      - ${STRAPI_DATA_DIR}:/svr/app
-    # environment:
-    #   DATABASE_CLIENT: ${STRAPI_DATABASE_CLIENT}
-    #   DATABASE_HOST: ${STRAPI_DATABASE_HOST}
-    #   DATABASE_PORT: ${STRAPI_DATABASE_PORT}
-    #   DATABASE_NAME: ${STRAPI_DATABASE_NAME}
-    #   DATABASE_USERNAME: ${STRAPI_DATABASE_USERNAME}
-    #   DATABASE_PASSWORD: ${STRAPI_DATABASE_PASSWORD}
-    # DATABASE_SSL: ${STRAPI_DATABASE_SSL}
-    # EXTRA_ARGS: ${STRAPI_EXTRA_ARGS}
-    # depends_on:
-    #   - mongo
-
-  # postgres:
-  #   image: postgres:alpine
-  #   container_name: postgres_a
-  #   hostname: postgres
-  #   restart: unless-stopped
-  #   environment:
-  #     POSTGRES_DB: ${POSTGRES_DB}
-  #     POSTGRES_USER: ${POSTGRES_USER}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-  #   volumes:
-  #     - ${POSTGRES_DATA_DIR}:/var/lib/postgresql/data
-
-  # mongo:
-  #   image: mongo
-  #   container_name: mongo
-  #   hostname: mongo
-  #   restart: unless-stopped
-  #   environment:
-  #     POSTGRES_DB: ${MONGODB_DB}
-  #     POSTGRES_USER: ${MONGODB_USER}
-  #     POSTGRES_PASSWORD: ${MONGODB_PASSWORD}
-  #   volumes:
-  #     - ${MONGODB_DATA_DIR}:/data/db

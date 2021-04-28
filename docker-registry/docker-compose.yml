@@ -2,25 +2,26 @@
 # docker-compose -f docker-compose.yml up --force-recreate --build -d
 # docker-compose -f docker-compose.yml down
 
-version: "3"
+version: "3.6"
 
 services:
   #Registry
   registry:
+    container_name: docker-registry
     image: registry:latest
     restart: unless-stopped
     ports:
-      - "5998:5000"
+      - "5999:5000"
     environment:
       REGISTRY_AUTH: htpasswd
       REGISTRY_AUTH_HTPASSWD_REALM: Registry-Realm
       REGISTRY_AUTH_HTPASSWD_PATH: /auth/registry.passwd
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /data
     volumes:
-      - c:\dkr\registry2\registry:/data
-      - c:\dkr\registry2\registry\auth:/auth
+      - c:\dkr\registry:/var/lib/registry
     networks:
       - mynet
+  
   #Nginx Service
   nginx:
     image: nginx:alpine
@@ -28,13 +29,13 @@ services:
     restart: unless-stopped
     tty: true
     ports:
-      - "80:80"
-      - "443:443"
+      - "85:80"
     volumes:
-      - c:\dkr\registry2\nginx\conf.d\:/etc/nginx/conf.d/
-      - c:\dkr\registry2\\nginx\ssl\:/etc/nginx/ssl/
+      - c:\dkr\nginx\conf.d\:/etc/nginx/conf.d/
+      - c:\dkr\nginx\ssl\:/etc/nginx/ssl/
     networks:
       - mynet
+
 #Docker Networks
 networks:
   mynet:

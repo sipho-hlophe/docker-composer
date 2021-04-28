@@ -1,0 +1,72 @@
+{
+  "kind": "collectionType",
+  "collectionName": "environments",
+  "info": {
+    "name": "Lookups",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "Environments": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "DEV",
+        "STAGING",
+        "UAT",
+        "PRE_PRODUCTION",
+        "PRODUCTION"
+      ],
+      "required": true,
+      "unique": true
+    },
+    "ItemType": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "Documentation",
+        "Feature",
+        "Bug",
+        "Task"
+      ],
+      "unique": true,
+      "required": true
+    },
+    "Status": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "enumeration",
+      "enum": [
+        "BACKLOG",
+        "READY",
+        "IN_PROGRESS",
+        "REQUIRES_ATTENTION",
+        "FAIL",
+        "PASS",
+        "COMPLETE"
+      ],
+      "unique": true,
+      "required": true
+    }
+  }
+}
