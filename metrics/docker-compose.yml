@@ -1,0 +1,77 @@
+# docker-compose -f docker-compose.yml up --force-recreate --build -d
+# docker-compose -f docker-compose.yml down
+# Graphana -> InfluxDB <- Telegraph <- app
+
+version: "3"
+services:
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - ${GRAFANA_PORT}:3000
+    networks:
+      - monitoring
+    volumes:
+      - ${GRAFANA_DIR}:/vol01/Docker/monitoring
+  influxdb:
+    image: influxdb:alpine
+    container_name: influxdb
+    restart: unless-stopped
+    ports:
+      - ${INFLUXDB_PORT}:8086
+    networks:
+      - monitoring
+    volumes:
+      - ${INFLUXDB_DATA_DIR}:/var/lib/influxdb
+      - ${INFLUXDB_DATA2_DIR}:/var/lib/influxdb2
+    environment:
+      - INFLUXDB_DB=telegraf
+      - INFLUXDB_USER=telegraf
+      - INFLUXDB_ADMIN_ENABLED=true
+      - INFLUXDB_ADMIN_USER=admin
+      - INFLUXDB_ADMIN_PASSWORD=Welcome1 
+  telegraf:
+    image: telegraf
+    container_name: telegraf
+    restart: unless-stopped
+    extra_hosts:
+     - "influxdb:192.168.0.110"
+    environment:
+      HOST_PROC: /rootfs/proc
+      HOST_SYS: /rootfs/sys
+      HOST_ETC: /rootfs/etc
+    volumes:
+     - ${TELEGRAF_CONF}:/etc/telegraf/telegraf.conf:ro
+    #  - /var/run/docker.sock:/var/run/docker.sock:ro
+    #  - /sys:/rootfs/sys:ro
+    #  - /proc:/rootfs/proc:ro
+    #  - /etc:/rootfs/etc:ro
+  chronograf:
+    image: chronograf
+    container_name: chronograf
+    restart: unless-stopped
+    networks:
+        - monitoring
+    ports: 
+        - ${CHRONOGRAF_PORT}:8888
+    volumes: 
+        - ${CHRONOGRAF_DIR}:/var/lib/chronograf
+    environment: 
+        - influxdb-url=http://influxdb:8086
+  kapacitor:
+    image: kapacitor
+    container_name: kapacitor
+    restart: unless-stopped
+    networks: 
+        - monitoring
+    ports:
+        - ${KAPACITOR_PORT}:9092
+    environment: 
+        - KAPACITOR_HOSTNAME=kapacitor
+        - KAPACITOR_LOGGING_LEVEL=INFO
+        - KAPACITOR_REPORTING_ENABLED=true
+        - KAPACITOR_INFLUXDB_0_URLS_0=http://influxdb:8086
+
+networks:
+  monitoring:

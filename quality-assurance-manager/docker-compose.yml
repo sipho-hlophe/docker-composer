@@ -4,6 +4,17 @@
 version: "3.6"
 
 services:
+  qa:
+    image: localhost:5999/qa-manager:1.0.0
+    container_name: qa-manager
+    restart: unless-stopped
+    networks: 
+      - strapi-app-network
+    ports: 
+      - "94:80"
+    depends_on: 
+      - strapi
+
   strapi:
     image: strapi/strapi
     container_name: strapi
